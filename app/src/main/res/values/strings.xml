@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Insta</string>
+    <string name="or">OR</string>
+    <string name="username_mobile_email">Phone number, email or username</string>
+    <string name="password">Password</string>
+    <string name="login">Log in</string>
+    <string name="signup">Sign up</string>
+
+
+    <string-array name="languages">
+            <item>English</item>
+            <item>فارسی</item>
+    </string-array>
+
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ir.amir.isnta.data.dataSore.DataStore
 
@@ -12,5 +13,5 @@ import ir.amir.isnta.data.dataSore.DataStore
 object AppModule {
 
     @Provides
-    fun provideDataStore(context: Context) = DataStore(context)
+    fun provideDataStore(@ApplicationContext context: Context) = DataStore(context)
 }

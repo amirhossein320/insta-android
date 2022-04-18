@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Insta</string>
+    <string name="or">یا</string>
+    <string name="username_mobile_email">شماره تلفن، ایمیل یا نام کاربری</string>
+    <string name="password">رمزعبور</string>
+    <string name="login">ورود</string>
+    <string name="signup">ثبت نام</string>
+</resources>
