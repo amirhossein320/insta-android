@@ -10,20 +10,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val dataStore: DataStore) :
-    BaseViewModel<MainState, MainIntent>() {
+    BaseViewModel<MainState, MainEvent>() {
 
+    override fun createInitialState(): MainState  = MainState.IDLE
 
-    override fun handleIntent() {
+    override fun handleEvents() {
         viewModelScope.launch {
-            intent.consumeAsFlow().collect { mainState ->
-                when (mainState) {
-                    is MainIntent.GetLocal -> {
+            _event.consumeAsFlow().collect { mainEvent ->
+                when (mainEvent) {
+                    is MainEvent.GetLocal -> {
                         val local = dataStore.getLocalApp()
-                        state.emit(MainState.ChangeLocal("fa"))
+                        _state.emit(MainState.ChangeLocal(local))
+                        _state.emit(MainState.SetContentView)
                     }
                 }
             }
         }
     }
 
+   suspend fun getLocal() = dataStore.getLocalApp()
 }

@@ -4,7 +4,8 @@ import ir.amir.isnta.presenter.base.UiState
 
 sealed class MainState : UiState {
 
-    data class ChangeLocal(val languageId: String) : MainState()
+    object IDLE : MainState()
     object SetContentView : MainState()
+    data class ChangeLocal(val languageId: String) : MainState()
 }
 
