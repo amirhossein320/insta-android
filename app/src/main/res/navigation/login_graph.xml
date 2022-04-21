@@ -7,5 +7,13 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="ir.amir.isnta.presenter.login.LoginFragment"
-        android:label="LoginFragment" />
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
+            app:destination="@id/forgetPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgetPasswordFragment"
+        android:name="ir.amir.isnta.presenter.login.forgetPassword.ForgetPasswordFragment"
+        android:label="ForgetPasswordFragment" />
 </navigation>

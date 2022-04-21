@@ -88,7 +88,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/medium_margin"
-        android:text="TextView"
+        android:text="@string/forget_password"
         android:padding="@dimen/micro_margin"
         app:layout_constraintEnd_toEndOf="@+id/passwordInputLayout"
         app:layout_constraintStart_toStartOf="@+id/passwordInputLayout"

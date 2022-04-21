@@ -6,4 +6,7 @@
     <string name="password">رمزعبور</string>
     <string name="login">ورود</string>
     <string name="signup">ثبت نام</string>
+    <string name="forget_password">رمز عبور را فراموش کرده اید؟ کلیک کنید</string>
+
+
 </resources>

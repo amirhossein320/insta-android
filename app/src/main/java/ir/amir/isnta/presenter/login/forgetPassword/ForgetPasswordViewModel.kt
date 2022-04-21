@@ -1,39 +1,35 @@
-package ir.amir.isnta.presenter.login
+package ir.amir.isnta.presenter.login.forgetPassword
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.amir.isnta.data.dataSore.DataStore
 import ir.amir.isnta.presenter.base.BaseViewModel
-import ir.amir.isnta.presenter.base.UiState
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val dataStore: DataStore) :
-    BaseViewModel<LoginState, LoginEvent>() {
+class ForgetPasswordViewModel @Inject constructor(private val dataStore: DataStore) :
+    BaseViewModel<ForgetPasswordState, ForgetPasswordEvent>() {
 
     var firstTime = true
 
-    val effect = Channel<UiState>()
-
-    override fun createInitialState() = LoginState.IDLE
+    override fun createInitialState() = ForgetPasswordState.IDLE
 
     override fun handleEvents() {
         viewModelScope.launch {
             _event.consumeAsFlow().collect { event ->
                 when (event) {
-                    is LoginEvent.GetLocal -> {
+                    is ForgetPasswordEvent.GetLocal -> {
                         val languageId = dataStore.getLocalApp()
-                        _state.emit(LoginState.GetLocale(languageId))
+                        _state.emit(ForgetPasswordState.GetLocale(languageId))
                     }
-                    is LoginEvent.ChangeLocale -> {
+                    is ForgetPasswordEvent.ChangeLocale -> {
                         dataStore.setLocalApp(event.languageId)
-                        _state.emit(LoginState.ChangeLocal)
+                        _state.emit(ForgetPasswordState.ChangeLocal)
                     }
-                    is LoginEvent.ForgetPassword -> {
-                       effect.send(LoginState.ForgePassword)
+                    is ForgetPasswordEvent.ForgetPassword -> {
+                        _state.emit(ForgetPasswordState.ForgePassword)
                     }
                 }
             }

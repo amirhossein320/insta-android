@@ -1,14 +1,21 @@
 package ir.amir.isnta.presenter.login
 
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import ir.amir.isnta.R
 import ir.amir.isnta.databinding.FragmentLoginBinding
 import ir.amir.isnta.presenter.base.BaseFragment
 import ir.amir.isnta.util.restartApp
+import kotlinx.coroutines.flow.consumeAsFlow
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
@@ -18,19 +25,45 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setEvent(LoginEvent.GetLocal)
+        if (viewModel.firstTime) viewModel.setEvent(LoginEvent.GetLocal)
+
         handleState()
         setupLanguagesSpinner()
+        setupForgotPasswordButton()
+        handleEffect()
     }
 
     private fun handleState() {
         lifecycleScope.launchWhenCreated {
             viewModel.state.collect { state ->
+                Log.e(TAG, "handleState: $state" )
                 when (state) {
                     is LoginState.GetLocale ->
-                        binding.spLanguages.setSelection(if(state.languageId == "en") 0 else 1)
+                        binding.spLanguages.setSelection(if (state.languageId == "en") 0 else 1)
                     is LoginState.ChangeLocal ->
                         requireContext().restartApp(requireActivity())
+                    is LoginState.ForgePassword -> {
+                        viewModel.firstTime = true
+                        navigate(R.id.forgetPasswordFragment)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleEffect() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.effect.consumeAsFlow().collect { state ->
+                Log.e(TAG, "handleEffect: $state" )
+                when (state) {
+                    is LoginState.GetLocale ->
+                        binding.spLanguages.setSelection(if (state.languageId == "en") 0 else 1)
+                    is LoginState.ChangeLocal ->
+                        requireContext().restartApp(requireActivity())
+                    is LoginState.ForgePassword -> {
+                        viewModel.firstTime = true
+                        navigate(R.id.forgetPasswordFragment)
+                    }
                 }
             }
         }
@@ -49,6 +82,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                     )
                 }
             }
+
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 TODO("Not yet implemented")
             }
@@ -56,9 +90,25 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         }
     }
 
-    private fun setupForgetButton() {
+    private fun setupForgotPasswordButton() {
+        val link = getString(R.string.forget_password)
+        val linkClick = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                viewModel.setEvent(LoginEvent.ForgetPassword)
+            }
+        }
+        val spannable = SpannableString(link).apply {
+            setSpan(linkClick, (
+                    if (link.contains("?")) link.indexOfFirst { it == '?' }
+                    else link.indexOfFirst { it == '؟' }
+                    ) + 2,
+                link.length,
+                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
         binding.btnForgetPass.apply {
-            text = ""
+            text = spannable
+            movementMethod = LinkMovementMethod.getInstance()
         }
     }
 }
