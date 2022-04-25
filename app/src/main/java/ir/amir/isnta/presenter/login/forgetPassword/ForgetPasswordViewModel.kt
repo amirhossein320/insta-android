@@ -4,13 +4,14 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.amir.isnta.data.dataSore.DataStore
 import ir.amir.isnta.presenter.base.BaseViewModel
+import ir.amir.isnta.presenter.login.LoginEffect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ForgetPasswordViewModel @Inject constructor(private val dataStore: DataStore) :
-    BaseViewModel<ForgetPasswordState, ForgetPasswordEvent>() {
+    BaseViewModel<ForgetPasswordState, ForgetPasswordEvent,LoginEffect>() {
 
     var firstTime = true
 

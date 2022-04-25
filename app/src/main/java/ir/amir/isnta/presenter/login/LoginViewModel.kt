@@ -12,11 +12,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val dataStore: DataStore) :
-    BaseViewModel<LoginState, LoginEvent>() {
+    BaseViewModel<LoginState, LoginEvent, LoginEffect>() {
 
     var firstTime = true
-
-    val effect = Channel<UiState>()
 
     override fun createInitialState() = LoginState.IDLE
 
@@ -30,10 +28,10 @@ class LoginViewModel @Inject constructor(private val dataStore: DataStore) :
                     }
                     is LoginEvent.ChangeLocale -> {
                         dataStore.setLocalApp(event.languageId)
-                        _state.emit(LoginState.ChangeLocal)
+                        _effect.send(LoginEffect.ChangeLocal)
                     }
                     is LoginEvent.ForgetPassword -> {
-                       effect.send(LoginState.ForgePassword)
+                        _effect.send(LoginEffect.ForgePassword)
                     }
                 }
             }

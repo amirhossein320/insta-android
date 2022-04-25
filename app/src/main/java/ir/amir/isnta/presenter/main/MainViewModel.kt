@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val dataStore: DataStore) :
-    BaseViewModel<MainState, MainEvent>() {
+    BaseViewModel<MainState, MainEvent,MainEffect>() {
 
     override fun createInitialState(): MainState  = MainState.IDLE
 

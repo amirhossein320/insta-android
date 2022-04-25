@@ -5,9 +5,6 @@ import ir.amir.isnta.presenter.base.UiState
 sealed class LoginState : UiState {
 
     object IDLE : LoginState()
-    object ChangeLocal : LoginState()
-    object Signup : LoginState()
-    object ForgePassword : LoginState()
     data class GetLocale(val languageId: String) : LoginState()
 
     sealed class Login {

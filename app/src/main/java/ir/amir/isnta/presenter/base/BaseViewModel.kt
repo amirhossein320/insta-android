@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<US : UiState, UE : UiEvent> : ViewModel() {
+abstract class BaseViewModel<US : UiState, UE : UiEvent, UEF:UiEffect> : ViewModel() {
 
 
     private val initializeState: US by lazy { createInitialState() }
@@ -18,6 +18,8 @@ abstract class BaseViewModel<US : UiState, UE : UiEvent> : ViewModel() {
     val state: StateFlow<US> get() = _state
 
     protected val _event = Channel<UE>()
+    protected val _effect = Channel<UEF>()
+    val effect get() = _effect
 
     init {
         handleEvents()

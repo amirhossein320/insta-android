@@ -7,6 +7,7 @@ import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -36,16 +37,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private fun handleState() {
         lifecycleScope.launchWhenCreated {
             viewModel.state.collect { state ->
-                Log.e(TAG, "handleState: $state" )
                 when (state) {
+                    is LoginState.IDLE -> {}
                     is LoginState.GetLocale ->
                         binding.spLanguages.setSelection(if (state.languageId == "en") 0 else 1)
-                    is LoginState.ChangeLocal ->
-                        requireContext().restartApp(requireActivity())
-                    is LoginState.ForgePassword -> {
-                        viewModel.firstTime = true
-                        navigate(R.id.forgetPasswordFragment)
-                    }
                 }
             }
         }
@@ -53,14 +48,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun handleEffect() {
         lifecycleScope.launchWhenCreated {
-            viewModel.effect.consumeAsFlow().collect { state ->
-                Log.e(TAG, "handleEffect: $state" )
-                when (state) {
-                    is LoginState.GetLocale ->
-                        binding.spLanguages.setSelection(if (state.languageId == "en") 0 else 1)
-                    is LoginState.ChangeLocal ->
+            viewModel.effect.consumeAsFlow().collect { effect ->
+                when (effect) {
+                    is LoginEffect.ChangeLocal ->
                         requireContext().restartApp(requireActivity())
-                    is LoginState.ForgePassword -> {
+                    is LoginEffect.ForgePassword -> {
                         viewModel.firstTime = true
                         navigate(R.id.forgetPasswordFragment)
                     }
