@@ -32,6 +32,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         setupLanguagesSpinner()
         setupForgotPasswordButton()
         handleEffect()
+        onLoginClicked()
+    }
+
+    private fun onLoginClicked() {
+        binding.btnLogin.setOnClickListener {
+            viewModel.setEvent(LoginEvent.Login("",""))
+        }
     }
 
     private fun handleState() {
@@ -55,6 +62,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                     is LoginEffect.ForgePassword -> {
                         viewModel.firstTime = true
                         navigate(R.id.forgetPasswordFragment)
+                    }
+                    is LoginEffect.Signup -> {
+                        viewModel.firstTime = true
+                        navigate(R.id.signupFragment)
                     }
                 }
             }

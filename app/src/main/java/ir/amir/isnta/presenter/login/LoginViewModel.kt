@@ -3,6 +3,7 @@ package ir.amir.isnta.presenter.login
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.amir.isnta.data.dataSore.DataStore
+import ir.amir.isnta.data.repository.AuthenticationRepository
 import ir.amir.isnta.presenter.base.BaseViewModel
 import ir.amir.isnta.presenter.base.UiState
 import kotlinx.coroutines.channels.Channel
@@ -11,7 +12,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val dataStore: DataStore) :
+class LoginViewModel @Inject constructor(
+    private val authRepository: AuthenticationRepository,
+    private val dataStore: DataStore
+) :
     BaseViewModel<LoginState, LoginEvent, LoginEffect>() {
 
     var firstTime = true
@@ -32,6 +36,11 @@ class LoginViewModel @Inject constructor(private val dataStore: DataStore) :
                     }
                     is LoginEvent.ForgetPassword -> {
                         _effect.send(LoginEffect.ForgePassword)
+                    }
+                    is LoginEvent.Login -> {
+                        authRepository.signup().collect{
+
+                        }
                     }
                 }
             }

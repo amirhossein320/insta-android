@@ -11,9 +11,16 @@
         <action
             android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
             app:destination="@id/forgetPasswordFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signupFragment"
+            app:destination="@id/signupFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgetPasswordFragment"
         android:name="ir.amir.isnta.presenter.login.forgetPassword.ForgetPasswordFragment"
         android:label="ForgetPasswordFragment" />
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="ir.amir.isnta.presenter.login.signup.SignupFragment"
+        android:label="SignupFragment" />
 </navigation>
