@@ -1,6 +1,7 @@
 package ir.amir.isnta.presenter.base
 
 import android.os.Bundle
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
+import ir.amir.isnta.util.showToast
 
 
 open class BaseFragment<T : ViewBinding>(
@@ -40,4 +42,6 @@ open class BaseFragment<T : ViewBinding>(
     fun navigate(navDirections: NavDirections) {
         findNavController().navigate(navDirections)
     }
+
+    fun showToast(message: String) = binding.root.showToast(message)
 }

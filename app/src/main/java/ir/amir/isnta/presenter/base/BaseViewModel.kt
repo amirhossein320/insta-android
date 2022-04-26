@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<US : UiState, UE : UiEvent, UEF:UiEffect> : ViewModel() {
+abstract class BaseViewModel<US : UiState, UE : UiEvent, UEF : UiEffect> : ViewModel() {
 
 
     private val initializeState: US by lazy { createInitialState() }
@@ -30,6 +30,12 @@ abstract class BaseViewModel<US : UiState, UE : UiEvent, UEF:UiEffect> : ViewMod
     fun setEvent(event: UE) {
         viewModelScope.launch {
             _event.send(event)
+        }
+    }
+
+    fun setEffect(effect: UEF) {
+        viewModelScope.launch {
+            _effect.send(effect)
         }
     }
 }

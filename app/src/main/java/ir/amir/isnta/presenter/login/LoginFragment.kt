@@ -16,6 +16,7 @@ import ir.amir.isnta.R
 import ir.amir.isnta.databinding.FragmentLoginBinding
 import ir.amir.isnta.presenter.base.BaseFragment
 import ir.amir.isnta.util.restartApp
+import ir.amir.isnta.util.showToast
 import kotlinx.coroutines.flow.consumeAsFlow
 
 @AndroidEntryPoint
@@ -48,6 +49,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                     is LoginState.IDLE -> {}
                     is LoginState.GetLocale ->
                         binding.spLanguages.setSelection(if (state.languageId == "en") 0 else 1)
+                    is LoginState.Login.Loading-> showToast("loading")
+                    is LoginState.Login.Error-> showToast(state.message)
+                    is LoginState.Login.Success-> viewModel.setEffect(LoginEffect.Login)
                 }
             }
         }
@@ -67,6 +71,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                         viewModel.firstTime = true
                         navigate(R.id.signupFragment)
                     }
+                    is LoginEffect.Login -> {}
                 }
             }
         }

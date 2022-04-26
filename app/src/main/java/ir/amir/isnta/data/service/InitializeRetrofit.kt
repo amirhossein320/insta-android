@@ -2,6 +2,7 @@ package ir.amir.isnta.data.service
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import ir.amir.isnta.BuildConfig
+import ir.amir.isnta.data.service.auth.AuthenticationApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -39,5 +40,4 @@ class InitializeRetrofit {
         }
     }
 
-    fun apiService(retrofit: Retrofit) = retrofit.create(ApiService::class.java)
 }

@@ -9,17 +9,18 @@ import dagger.hilt.components.SingletonComponent
 import ir.amir.isnta.data.dataSore.DataStore
 import ir.amir.isnta.data.service.InitializeRetrofit
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
     @Provides
+    @Singleton
     fun provideDataStore(@ApplicationContext context: Context) = DataStore(context)
 
     @Provides
+    @Singleton
     fun provideRetrofit() = InitializeRetrofit().retrofit()
 
-    @Provides
-    fun provideApiService(retrofit: Retrofit) = InitializeRetrofit().apiService(retrofit)
 }
