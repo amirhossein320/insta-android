@@ -1,8 +1,6 @@
 package ir.amir.isnta.data.repository
 
 import ir.amir.isnta.data.service.auth.AuthenticationApiService
-import ir.amir.isnta.data.service.auth.UserResponse
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class AuthenticationRepository
@@ -10,11 +8,11 @@ class AuthenticationRepository
 
     suspend fun login(
         username: String, password: String
-    ) = request { authApi.login(username, password) }
+    ) = requestApi { authApi.login(username, password) }
 
     suspend fun signup(
         phoneNumber: String? = null, email: String? = null
-    ) = request { authApi.signup(phoneNumber, email) }
+    ) = requestApi { authApi.signup(phoneNumber, email) }
 
 
 }

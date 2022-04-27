@@ -21,6 +21,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit() = InitializeRetrofit().retrofit()
+    fun provideRetrofit(@ApplicationContext context: Context) = InitializeRetrofit().retrofit(context)
 
 }

@@ -6,18 +6,22 @@ import retrofit2.Response
 
 abstract class BaseRepository {
 
-    fun <T> request(
+    fun <T> requestApi(
         call: suspend () -> Response<ApiResponse<T>>
     ) = flow<RepositoryResult> {
         emit(RepositoryResult.Loading)
-        val response = call()
-        if (response.isSuccessful) {
-            response.body()?.let {
-                emit(RepositoryResult.Data(it.data))
-            } ?: emit(RepositoryResult.Error("body is null"))
+        try {
+            val response = call()
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    emit(RepositoryResult.Data(it.data))
+                } ?: emit(RepositoryResult.Error("body is null"))
 
-        } else {
-            emit(RepositoryResult.Error(response.message()))
+            } else {
+                emit(RepositoryResult.Error(response.message()))
+            }
+        } catch (e: Exception) {
+            emit(RepositoryResult.Error(e.message!!))
         }
     }
 }

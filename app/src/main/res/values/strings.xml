@@ -7,6 +7,9 @@
     <string name="signup">Sign up</string>
     <string name="forget_password">forgot password? click her</string>
 
+    <string name="err_request_failed">request failed</string>
+    <string name="err_time_out">request time out</string>
+    <string name="err_no_internet">no internet connection</string>
 
     <string-array name="languages">
             <item>English</item>
