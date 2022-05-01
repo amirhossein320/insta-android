@@ -51,5 +51,4 @@ fun Context.hasNetwork(): Boolean {
         val networkInfo: NetworkInfo? = connMgr.activeNetworkInfo
         networkInfo?.run { isConnected == true } ?: false
     }
-
 }

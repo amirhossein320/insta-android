@@ -15,8 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ir.amir.isnta.R
 import ir.amir.isnta.databinding.FragmentLoginBinding
 import ir.amir.isnta.presenter.base.BaseFragment
-import ir.amir.isnta.util.restartApp
-import ir.amir.isnta.util.showToast
+import ir.amir.isnta.util.*
 import kotlinx.coroutines.flow.consumeAsFlow
 
 @AndroidEntryPoint
@@ -36,12 +35,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         onLoginClicked()
     }
 
-    private fun onLoginClicked() {
-        binding.btnLogin.setOnClickListener {
-            viewModel.setEvent(LoginEvent.Login("",""))
-        }
-    }
-
     private fun handleState() {
         lifecycleScope.launchWhenCreated {
             viewModel.state.collect { state ->
@@ -49,9 +42,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                     is LoginState.IDLE -> {}
                     is LoginState.GetLocale ->
                         binding.spLanguages.setSelection(if (state.languageId == "en") 0 else 1)
-                    is LoginState.Login.Loading-> showToast("loading")
-                    is LoginState.Login.Error-> showToast(state.message)
-                    is LoginState.Login.Success-> viewModel.setEffect(LoginEffect.Login)
+                    is LoginState.Login.Loading -> renderLogin(true)
+                    is LoginState.Login.Error -> renderLogin(errorMessage = state.message)
+                    is LoginState.Login.Success -> viewModel.setEffect(LoginEffect.Login)
                 }
             }
         }
@@ -117,6 +110,25 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         binding.btnForgetPass.apply {
             text = spannable
             movementMethod = LinkMovementMethod.getInstance()
+        }
+    }
+
+    private fun onLoginClicked() {
+        binding.btnLogin.setOnClickListener {
+            viewModel.setEvent(LoginEvent.Login("", ""))
+        }
+    }
+
+    private fun renderLogin(isLoading: Boolean = false, errorMessage: String = "") {
+        with(binding) {
+            if (isLoading) {
+                loginProgress.visible()
+                btnLogin.setEmpty()
+            } else {
+                loginProgress.invisible()
+                btnLogin.text = getString(R.string.login)
+                showToast(errorMessage)
+            }
         }
     }
 }
