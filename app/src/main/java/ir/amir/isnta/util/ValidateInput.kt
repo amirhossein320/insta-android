@@ -2,10 +2,19 @@ package ir.amir.isnta.util
 
 class ValidateInput {
 
+    fun loginValidation(username: String, password: String): Boolean {
+        return if (validateEmail(username)
+            || validateUsername(username)
+            || validatePhoneNumber(username)
+        ) {
+            validatePassword(password)
+        } else false
+    }
+
     fun validatePhoneNumber(phoneNumber: String): Boolean {
         val pattern = Regex("(?<=\\s|^)\\d+(?=\\s|\$)")
         return if (phoneNumber.length == 11) {
-             pattern.matches(phoneNumber)
+            pattern.matches(phoneNumber)
         } else false
     }
 
@@ -15,7 +24,7 @@ class ValidateInput {
     }
 
     fun validateUsername(username: String): Boolean {
-       return !username.startsWith(".") &&
+        return !username.startsWith(".") &&
                 !username.startsWith("_") &&
                 !username.endsWith(".") &&
                 !username.endsWith("_") &&

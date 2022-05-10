@@ -1,8 +1,10 @@
 package ir.amir.isnta.util
 
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.textfield.TextInputLayout
 
 
 fun View.visible() {
@@ -24,3 +26,5 @@ fun View.showToast(message: String) {
 fun TextView.setEmpty() {
     text = ""
 }
+
+fun TextInputLayout.getText() = editText?.text.toString()
