@@ -2,6 +2,7 @@ package ir.amir.isnta.data.repository
 
 import ir.amir.isnta.data.service.ApiResponse
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
 import retrofit2.Response
 
 abstract class BaseRepository {

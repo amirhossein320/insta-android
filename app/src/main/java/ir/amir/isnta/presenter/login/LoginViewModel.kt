@@ -5,12 +5,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.amir.isnta.data.dataSore.DataStore
 import ir.amir.isnta.data.repository.AuthenticationRepository
 import ir.amir.isnta.data.repository.RepositoryResult
-import ir.amir.isnta.data.service.auth.UserResponse
 import ir.amir.isnta.presenter.base.BaseViewModel
-import ir.amir.isnta.presenter.base.UiState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -48,14 +44,13 @@ class LoginViewModel @Inject constructor(
     }
 
 
-    private fun login(username: String, password: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            authRepository.login(username, password).collect {result->
-                when(result){
-                    is RepositoryResult.Loading -> _state.emit(LoginState.Login.Loading)
-                    is RepositoryResult.Error -> _state.emit(LoginState.Login.Error(result.message))
-                    is RepositoryResult.Data<*> -> _state.emit(LoginState.Login.Success)
-                }
+    private suspend fun login(username: String, password: String) {
+
+        launch(authRepository.login(username, password)){result->
+            when(result){
+                is RepositoryResult.Loading -> _state.emit(LoginState.Login.Loading)
+                is RepositoryResult.Error -> _state.emit(LoginState.Login.Error(result.message))
+                is RepositoryResult.Data<*> -> _state.emit(LoginState.Login.Success)
             }
         }
     }
